@@ -3,7 +3,11 @@ var app = express();
 var fs = require("fs");
 
 app.get('/events/unauthenticated.SEC_OTHER_OUTPUT/OpenDcae-c12/c12', function (req, res) {
-   res.json({"event":{"notificationFields": {"changeIdentifier": "PM_MEAS_FILES","changeType": "FileReady","notificationFieldsVersion": 1.0,"arrayOfAdditionalFields": [{"location": "ftpes://myuser:mypass@localhost:21/test5.txt","compression": "gzip","fileFormatType": "org.3GPP.32.435#measCollec","fileFormatVersion": "V10"},{"location": "sftp://foo:pass@localhost:22/test3.txt","compression": "gzip","fileFormatType": "org.3GPP.32.435#measCollec","fileFormatVersion": "V10"}]}}})
+	var message={"event":{"notificationFields": {"changeIdentifier": "PM_MEAS_FILES","changeType": "FileReady","notificationFieldsVersion": 1.0,"arrayOfAdditionalFields": [{"location": "ftpes://myuser:mypass@localhost:21/fileFromFtps.tar.gz","compression": "gzip","fileFormatType": "org.3GPP.32.435#measCollec","fileFormatVersion": "V10"},{"location": "sftp://foo:pass@localhost:22/fileFromSftp.tar.gz","compression": "gzip","fileFormatType": "org.3GPP.32.435#measCollec","fileFormatVersion": "V10"}]}}}
+//	console.log("recieved request from DFC, response with message {\"event\":{\"notificationFields\": {\"changeIdentifier\": \"PM_MEAS_FILES\",\"changeType\": \"FileReady\",\"notificationFieldsVersion\": 1.0,\"arrayOfAdditionalFields\": [{\"location\": \"ftpes://myuser:mypass@localhost:21/fileFromFtps.tar.gz\",\"compression\": \"gzip\",\"fileFormatType\": \"org.3GPP.32.435#measCollec\",\"fileFormatVersion\": \"V10\"},{\"location\": \"sftp://foo:pass@localhost:22/fileFromSftp.tar.gz\",\"compression\": \"gzip\",\"fileFormatType\": \"org.3GPP.32.435#measCollec\",\"fileFormatVersion\": \"V10\"}]}}}")
+	console.log("recieved request from DFC, respond with message:")
+	console.log(JSON.stringify(message, undefined, 4));
+   res.json(message)
 })
 
 var server = app.listen(2222, function () {
