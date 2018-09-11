@@ -26,7 +26,7 @@ app.post('/events/unauthenticated.FILE_READY', function (req, res) {
    res.send("ok")
 })
 
-var server = app.listen(2223, function () {
+var server = app.listen(3905, function () {
 
   var host = server.address().address
   var port = server.address().port
