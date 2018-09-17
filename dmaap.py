@@ -5,7 +5,34 @@ import json
 import sys
 
 posted_event_from_prh = b'Empty'
-received_event_to_get_method = b"{'event':{'notificationFields': {'changeIdentifier': 'PM_MEAS_FILES','changeType': 'FileReady','notificationFieldsVersion': 1.0,'arrayOfAdditionalFields': [{'location': 'ftpes://myuser:mypass@localhost:21/fileFromFtps.tar.gz','compression': 'gzip','fileFormatType': 'org.3GPP.32.435#measCollec','fileFormatVersion': 'V10'},{'location': 'sftp://foo:pass@localhost:22/fileFromSftp.tar.gz','compression': 'gzip','fileFormatType': 'org.3GPP.32.435#measCollec','fileFormatVersion': 'V10'}]}}}"
+received_event_to_get_method = b"""{'event': {
+        'notificationFields': {
+            'changeIdentifier': 'PM_MEAS_FILES',
+            'changeType': 'FileReady',
+            'notificationFieldsVersion': 1,
+            'arrayOfNamedHashMap': [
+                {
+                    'name': 'fileFromFtps.tar.gz',
+                    'hashMap': {
+                        'location': 'ftpes://myuser:mypass@localhost:21/fileFromFtps.tar.gz',
+                        'compression': 'gzip',
+                        'fileFormatType': 'org.3GPP.32.435#measCollec',
+                        'fileFormatVersion': 'V10'
+                    }
+                },
+                {
+                    'name': 'fileFromSftp.tar.gz',
+                    'hashMap': {
+                        'location': 'sftp://foo:pass@localhost:22/fileFromSftp.tar.gz',
+                        'compression': 'gzip',
+                        'fileFormatType': 'org.3GPP.32.435#measCollec',
+                        'fileFormatVersion': 'V10'
+                    }
+                }
+            ]
+        }
+    }
+    }"""
 
 
 class DMaaPHandler(BaseHTTPRequestHandler):
@@ -28,10 +55,11 @@ class DMaaPHandler(BaseHTTPRequestHandler):
         return
 
     def do_GET(self):
-        if re.search('/events/unauthenticated.FILE_READY/OpenDcae-c12/c12', self.path):
+        if re.search('/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12', self.path):
             _header_200_and_json(self)
             #self.wfile.write(json.dumps({'event':{'notificationFields': {'changeIdentifier': 'PM_MEAS_FILES','changeType': 'FileReady','notificationFieldsVersion': 1.0,'arrayOfAdditionalFields': [{'location': 'ftpes://myuser:mypass@localhost:21/fileFromFtps.tar.gz','compression': 'gzip','fileFormatType': 'org.3GPP.32.435#measCollec','fileFormatVersion': 'V10'},{'location': 'sftp://foo:pass@localhost:22/fileFromSftp.tar.gz','compression': 'gzip','fileFormatType': 'org.3GPP.32.435#measCollec','fileFormatVersion': 'V10'}]}}}))
             self.wfile.write(received_event_to_get_method)
+            print(received_event_to_get_method)
         elif re.search('/events/pnfReady', self.path):
             _header_200_and_json(self)
             #self.wfile.write(posted_event_from_prh)
