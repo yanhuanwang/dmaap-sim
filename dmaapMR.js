@@ -6,13 +6,13 @@ app.get('/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12', func
 	var message={"event":{"notificationFields": {"changeIdentifier": "PM_MEAS_FILES","changeType": "FileReady","notificationFieldsVersion": 1.0,"arrayOfNamedHashMap": [{"name": "fileFromFtps.tar.gz", "hashMap": {
           "location": "ftpes://myuser:mypass@localhost:21/fileFromFtps.tar.gz",
           "compression": "gzip",
-          "fileformatType": "org.3GPP.32.435#measCollec",
+          "fileFormatType": "org.3GPP.32.435#measCollec",
           "fileFormatVersion": "V10"
         }
       },{"name": "fileFromSftp.tar.gz", "hashMap": {
           "location": "sftp://foo:pass@localhost:22/fileFromSftp.tar.gz",
           "compression": "gzip",
-          "fileformatType": "org.3GPP.32.435#measCollec",
+          "fileFormatType": "org.3GPP.32.435#measCollec",
           "fileFormatVersion": "V10"
         }
       }]}}}
