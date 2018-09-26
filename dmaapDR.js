@@ -1,16 +1,16 @@
+var http = require('http');
+var https = require('https');
+
 var express = require('express');
 const stream = require('stream');
 var app = express();
 var fs = require("fs");
-const multer = require('multer');
-const upload = multer({
-  dest: 'uploads/' // this saves your file into a directory called "uploads"
-});
-const fileUpload = require('express-fileupload');
 var path = require('path');
+var privateKey  = fs.readFileSync('cert/private.key', 'utf8');
+var certificate = fs.readFileSync('cert/certificate.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
 var bodyParser = require('body-parser')
-app.use(fileUpload());
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -26,6 +26,9 @@ app.use(bodyParser.raw({ type: 'application/octet-stream' }))
 
 // parse an HTML body into a string
 app.use(bodyParser.text({ type: 'text/html' }))
+app.get("/",function(req, res){
+	res.send("ok");
+})
 app.post('/publish/1/:filename', function (req, res) {
 	console.log(req.files);
 	console.log(req.body)
@@ -38,12 +41,19 @@ app.post('/publish/1/:filename', function (req, res) {
 	});
 	 res.send("ok")
 })
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
 
-var server = app.listen(3906, function () {
+httpServer.listen(3906);
+console.log("Example app http listening at 3906")
+httpsServer.listen(3907);
+console.log("Example app https listening at 3907")
 
-  var host = server.address().address
-  var port = server.address().port
-
-  console.log("Example app listening at http://%s:%s", host, port)
-
-})
+// var server = app.listen(3906, function () {
+//
+//   var host = server.address().address
+//   var port = server.address().port
+//
+//   console.log("Example app listening at http://%s:%s", host, port)
+//
+// })
