@@ -41,6 +41,19 @@ app.post('/publish/1/:filename', function (req, res) {
 	});
 	 res.send("ok")
 })
+app.put('/publish/1/:filename', function (req, res) {
+	console.log(req.files);
+	console.log(req.body)
+	console.log(req.headers)
+	var filename = path.basename(req.params.filename);
+  filename = path.resolve(__dirname, filename);
+	console.log(req.params.filename);
+  fs.writeFile(filename, req.body, function (error) {
+  	if (error) { console.error(error); }
+	});
+	 // res.send("ok")
+	 res.redirect(301, 'http://www.google.com')
+})
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
