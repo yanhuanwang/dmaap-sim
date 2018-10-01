@@ -46,23 +46,22 @@ app.put('/publish/1/:filename', function (req, res) {
 	console.log(req.body)
 	console.log(req.headers)
 	var filename = path.basename(req.params.filename);
-  // filename = path.resolve(__dirname, filename);
-	// console.log(req.params.filename);
-  // fs.writeFile(filename, req.body, function (error) {
-  // 	if (error) { console.error(error); }
-	// });
-	 // res.send("ok")
-	 res.redirect(301, 'http://127.0.0.1:3908/publish/1/'+filename)
+  filename = path.resolve(__dirname, filename);
+	console.log(req.params.filename);
+  fs.writeFile(filename, req.body, function (error) {
+  	if (error) { console.error(error); }
+	});
+	 res.send("ok")
 })
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
-var httpPort=3906
-var httpsPort=3907
+var httpPort=3908
+var httpsPort=3909
 httpServer.listen(httpPort);
-console.log("Example app http listening at " + httpPort)
+console.log("Example app http listening at "+httpPort)
 httpsServer.listen(httpsPort);
-console.log("Example app https listening at "+ httpsPort)
+console.log("Example app https listening at "+httpsPort)
 
 // var server = app.listen(3906, function () {
 //
