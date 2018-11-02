@@ -11,7 +11,8 @@ var certificate = fs.readFileSync('cert/certificate.crt', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
 var bodyParser = require('body-parser')
-
+// app.use(bodyParser.json({limit: "50mb"}));
+// app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -22,8 +23,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
 
 // parse some custom thing into a Buffer
-app.use(bodyParser.raw({ type: 'application/octet-stream' }))
-
+app.use(bodyParser.raw({limit:1024*1024*20, type: 'application/octet-stream' }))
+// express.bodyParser({limit: '5mb'})
 // parse an HTML body into a string
 app.use(bodyParser.text({ type: 'text/html' }))
 app.get("/",function(req, res){

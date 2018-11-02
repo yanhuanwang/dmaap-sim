@@ -22,7 +22,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
 
 // parse some custom thing into a Buffer
-app.use(bodyParser.raw({ type: 'application/octet-stream' }))
+app.use(bodyParser.raw({limit:1024*1024*20, type: 'application/octet-stream' }))
 
 // parse an HTML body into a string
 app.use(bodyParser.text({ type: 'text/html' }))
