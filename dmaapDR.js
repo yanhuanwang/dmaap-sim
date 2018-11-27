@@ -44,8 +44,8 @@ app.post('/publish/1/:filename', function (req, res) {
 })
 app.put('/publish/1/:filename', function (req, res) {
 	console.log(req.files);
-	console.log(req.body)
-	console.log(req.headers)
+	console.log(req.body);
+	console.log(req.headers);
 	var filename = path.basename(req.params.filename);
   // filename = path.resolve(__dirname, filename);
 	// console.log(req.params.filename);
