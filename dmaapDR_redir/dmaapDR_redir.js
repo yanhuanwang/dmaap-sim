@@ -6,27 +6,40 @@ const stream = require('stream');
 var app = express();
 var fs = require("fs");
 var path = require('path');
-var privateKey  = fs.readFileSync('cert/private.key', 'utf8');
+var privateKey = fs.readFileSync('cert/private.key', 'utf8');
 var certificate = fs.readFileSync('cert/certificate.crt', 'utf8');
-var credentials = {key: privateKey, cert: certificate};
+var credentials = {
+	key: privateKey,
+	cert: certificate
+};
+var numOfFiles = 0;
 
 var bodyParser = require('body-parser')
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({
+	extended: false
+}))
 
 // parse application/json
 app.use(bodyParser.json())
 
 // parse application/vnd.api+json as json
-app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
+app.use(bodyParser.json({
+	type: 'application/vnd.api+json'
+}))
 
 // parse some custom thing into a Buffer
-app.use(bodyParser.raw({limit:1024*1024*20, type: 'application/octet-stream' }))
+app.use(bodyParser.raw({
+	limit: 1024 * 1024 * 20,
+	type: 'application/octet-stream'
+}))
 
 // parse an HTML body into a string
-app.use(bodyParser.text({ type: 'text/html' }))
-app.get("/",function(req, res){
+app.use(bodyParser.text({
+	type: 'text/html'
+}))
+app.get("/", function (req, res) {
 	res.send("ok");
 })
 app.post('/publish/1/:filename', function (req, res) {
@@ -34,34 +47,40 @@ app.post('/publish/1/:filename', function (req, res) {
 	console.log(req.body)
 	console.log(req.headers)
 	var filename = path.basename(req.params.filename);
-  filename = path.resolve(__dirname, filename);
+	filename = path.resolve(__dirname, filename);
 	console.log(req.params.filename);
-  fs.writeFile(filename, req.body, function (error) {
-  	if (error) { console.error(error); }
+	fs.writeFile(filename, req.body, function (error) {
+		if (error) {
+			console.error(error);
+		}
 	});
-	 res.send("ok")
+	res.send("ok")
 })
 app.put('/publish/1/:filename', function (req, res) {
 	console.log(req.files);
 	console.log(req.body)
 	console.log(req.headers)
 	var filename = path.basename(req.params.filename);
-  filename = path.resolve(__dirname, filename);
+	filename = path.resolve(__dirname, filename);
 	console.log(req.params.filename);
-  fs.writeFile(filename, req.body, function (error) {
-  	if (error) { console.error(error); }
+	fs.writeFile(filename, req.body, function (error) {
+		if (error) {
+			console.error(error);
+		}
 	});
-	 res.send("ok")
+	numOfFiles++;
+	console.log(numOfFiles + " files have been recieved.");
+	res.send("ok")
 })
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
-var httpPort=3908
-var httpsPort=3909
+var httpPort = 3908
+var httpsPort = 3909
 httpServer.listen(httpPort);
-console.log("Example app http listening at "+httpPort)
+console.log("Example app http listening at " + httpPort)
 httpsServer.listen(httpsPort);
-console.log("Example app https listening at "+httpsPort)
+console.log("Example app https listening at " + httpsPort)
 
 // var server = app.listen(3906, function () {
 //
